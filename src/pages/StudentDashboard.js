@@ -32,7 +32,7 @@ const StudentDashboard = () => {
     <div className="page-container">
       <div className="page-header">
         <h1>Student Dashboard</h1>
-        <p>Welcome back, {user?.first_name || 'Student'}! Here's your academic overview.</p>
+        <p>Welcome back, {user?.first_name || 'molefi'}! Here's your academic overview.</p>
       </div>
 
       {/* User Welcome Card */}
