@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUCT Backend Diagnostic</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .endpoint { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .success { background: #d4ffd4; }
+        .error { background: #ffd4d4; }
+        button { margin: 5px; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>LUCT Backend Diagnostic Tool</h1>
+    <div id="results"></div>
+    <button onclick="testAllEndpoints()">Test All Endpoints</button>
+
+    <script>
+        const BASE_URL = 'http://localhost:5002/api';
+        
+        async function testEndpoint(url, method = 'GET', body = null) {
+            const endpointDiv = document.createElement('div');
+            endpointDiv.className = 'endpoint';
+            endpointDiv.innerHTML = `<strong>Testing:</strong> ${method} ${url}`;
+            document.getElementById('results').appendChild(endpointDiv);
+
+            try {
+                const options = {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' }
+                };
+                
+                if (body) {
+                    options.body = JSON.stringify(body);
+                }
+
+                const response = await fetch(BASE_URL + url, options);
+                const data = await response.json();
+                
+                endpointDiv.classList.add('success');
+                endpointDiv.innerHTML += `<br><strong>Status:</strong> ${response.status} 
+                                         <br><strong>Response:</strong> <pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                endpointDiv.classList.add('error');
+                endpointDiv.innerHTML += `<br><strong>Error:</strong> ${error.message}`;
+            }
+        }
+
+        function testAllEndpoints() {
+            document.getElementById('results').innerHTML = '';
+            
+            // Test basic endpoints
+            testEndpoint('/health');
+            testEndpoint('/debug/tables');
+            testEndpoint('/debug/data');
+            
+            // Test auth endpoints
+            testEndpoint('/auth/login', 'POST', {
+                email: 'lecturer@luct.ac.za',
+                password: 'password'
+            });
+            
+            // Test reports endpoints
+            testEndpoint('/reports');
+            testEndpoint('/reports/my-reports');
+        }
+    </script>
+</body>
+</html>
