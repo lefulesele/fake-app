@@ -44,7 +44,7 @@ const LecturerDashboard = () => {
             {user?.first_name?.charAt(0) || 'L'}
           </div>
           <div className="welcome-text">
-            <h2>Hello, {user?.first_name || 'Lecturer'}!</h2>
+            <h2>Hello, {user?.first_name || 'mrs kolobeS'}!</h2>
             <p>Monitor your classes, review reports, and track student progress.</p>
           </div>
         </div>
